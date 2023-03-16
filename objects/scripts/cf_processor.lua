@@ -29,10 +29,12 @@ function canAddItem(i)
   for x = 1, world.containerSize(entity.id()) - 1, 1 do
     local slotItem = world.containerItemAt(entity.id(), x)
 
-    if slotItem and slotItem.name ~= i then
-      return false
+    if not slotItem or slotItem.name == i then
+      return true
     end
   end
+  
+  return false
 end
 
 function addItems(items)
