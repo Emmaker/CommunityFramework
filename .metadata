@@ -1,0 +1,8 @@
+{
+  "author" : "JamesTheMaker",
+  "description" : "",
+  "friendlyName" : "Community Framework",
+  "name" : "communityframework",
+  "version" : "1.0",
+  "includes" : [ "FrackinUniverse" ]
+}
