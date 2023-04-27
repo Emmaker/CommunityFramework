@@ -14,12 +14,12 @@ function update(dt)
 
   for x = 0, world.containerSize(entity.id()), 1 do
     for f, fuel in pairs(self.fuelsList) do
-	  if fuel[2] == world.containerItemAt(entity.id(), x) then
-	    world.containerConsumeAt(entity.id(), x, 1)
+      if fuel[2] == world.containerItemAt(entity.id(), x) then
+        world.containerConsumeAt(entity.id(), x, 1)
         cf_power.addPower(fuel[1])
-		
-		return
-	  end
-	end
+				
+	return
+      end
+    end
   end
 end
