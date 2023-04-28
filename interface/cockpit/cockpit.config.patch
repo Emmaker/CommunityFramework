@@ -1,0 +1,29 @@
+[
+  { "op" : "replace", "path" : "/threatLevelColor/default", "value" : [
+      [0, 165, 213], //TL 1
+      [0, 213, 160], //TL 2
+      [0, 213,  60], //TL 3
+      [60, 213,  0], //TL 4
+      [180, 213, 0], //TL 5
+      [213, 195, 0], //TL 6
+      [213, 140, 0], //TL 7
+      [234, 100, 0], //TL 8
+      [234, 69,  0], //TL 9
+      [209, 41,  0] //TL 10
+    ]
+  },
+
+  { "op" : "replace", "path" : "/threatLevelText/default", "value" : [
+      "Low [I]",
+      "Moderate [II]",
+      "Risky [III]",
+      "Dangerous [IV]",
+      "Extreme [V]",
+      "Inconceivable [VI]",
+      "Unreal [VII]",
+      "Unbelievable [VIII]",
+      "Outrageous [IX]",
+      "Impossible [X]"
+    ]
+  }
+]

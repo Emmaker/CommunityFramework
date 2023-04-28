@@ -1,8 +1,8 @@
 {
   "author" : "JamesTheMaker",
-  "description" : "",
+  "description" : "Community Framework is a mod that adds new scripts and functionality to Starbound for other modders to use and build off of. ",
   "friendlyName" : "Community Framework",
+  "includes" : ["FrackinUniverse"],
   "name" : "communityframework",
-  "version" : "1.0",
-  "includes" : [ "FrackinUniverse" ]
+  "version" : "1.0"
 }
