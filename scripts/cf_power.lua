@@ -1,22 +1,28 @@
 require "/scripts/util.lua"
 cf_power = {}
 
-function cf_power.setMaxPower(num)
-  storage.maxPower = num
+pInit = init
+function init()
+  if pInit then pInit() end
+
+  storage.maxPower = config.getParameter("maxPower", 0)
+  storage.power = config.getParameter("startPower", 0)
+  
+  message.setHandler("cf_power", cf_power.handler)
 end
 
 function cf_power.setPower(num)
   storage.power = util.clamp(num, 0, storage.maxPower)
 end
 
-function cf_power.addPower(num)
-  oldPower = (storage.power or 0)
+function cf_power.createPower(num)
+  pPower = (storage.power or 0)
 
   storage.power = util.clamp((storage.power or 0) + num, 0, storage.maxPower)
-  return (storage.power or 0) - oldPower
+  return (storage.power or 0) - pPower
 end
 
-function cf_power.takePower(num)
+function cf_power.consumePower(num)
   if (storage.power or 0) < num then
     return false
   end

@@ -1,13 +1,20 @@
+require "/scripts/cf_power.lua"
+
+pInit = init
 function init()
+  if pInit then pInit() end
+
+  self.powerUseAmount = config.getParameter("powerUseAmount", 0)
   self.recipeList = config.getParameter("recipeList")
   self.recipes = root.assetJson("/recipes/" .. self.recipeList .. ".config")
 
-  sb.logInfo("%s", self.recipes)
+  -- sb.logInfo("%s", self.recipes)
 end
 
 function update()
   if world.containerItemAt(entity.id(), 0) == nil then return end
-
+  if not cf_power.consumePower(self.powerUseAmount) then return end
+  
   for r, recipe in pairs(self.recipes) do
     if world.containerItemAt(entity.id(), 0).name == recipe[1] and canAddItems(recipe[2]) then
       addItems(recipe[2])
