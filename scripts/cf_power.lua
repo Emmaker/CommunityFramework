@@ -1,10 +1,7 @@
 require "/scripts/util.lua"
 cf_power = {}
 
-pInit = init
 function init()
-  if pInit then pInit() end
-
   storage.maxPower = config.getParameter("maxPower", 0)
   storage.power = config.getParameter("startPower", 0)
   
