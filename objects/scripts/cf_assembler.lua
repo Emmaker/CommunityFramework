@@ -14,22 +14,30 @@ end
 
 function update()
   containsItems = false
-  for i = 0, self.assemblerSlots - 1, do
-    if world.containerItemAt(entity.id(), i) != nil then
-	  containsItems = true
-	end
+  for i = 0, self.assemblerSlots - 1 do
+    if world.containerItemAt(entity.id(), i) ~= nil then
+	    containsItems = true
+      return
+	  end
   end
   if not containsItems then return end
   if not cf_power.consumePower(self.powerUseAmount) then return end
   
   ingredients = [ ]
-  for r, recipe in pairs(self.recipes) do
-    for i = 0, self.assemblerSlots - 1, do
-      ingredients[i + 1] = world.containerItemAt(entity.id(), i)
+  for i = 0, self.assemblerSlots - 1 do
+    ingredients[i + 1] = world.containerItemAt(entity.id(), i)
+  end
+
+  table.sort(ingredients)
+  for r, recipe in pairs(recipes) do
+    table.sort(recipe[1])
+    if ingredients == recipe[1] and canAddItems(recipe[2]) then
+      addItems(recipe[2]) 
+      for i = 0, self.assemblerSlots - 1 do
+        world.containerConsumeAt(entity.id(), i, 1)
+      end
     end
   end
-  
-  -- WIP
 end
 
 function canAddItems(items)
