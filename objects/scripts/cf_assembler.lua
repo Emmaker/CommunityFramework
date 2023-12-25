@@ -10,6 +10,8 @@ function init()
 	
   self.assemblerSlots = self.recipes[1]
   table.remove(self.recipes, 1)
+
+  sb.logInfo("%s", self.recipes)
 end
 
 function update()
@@ -17,22 +19,24 @@ function update()
   for i = 0, self.assemblerSlots - 1 do
     if world.containerItemAt(entity.id(), i) ~= nil then
 	    containsItems = true
-      return
 	  end
   end
+
   if not containsItems then return end
   if not cf_power.consumePower(self.powerUseAmount) then return end
   
-  ingredients = [ ]
+  ingredients = { }
   for i = 0, self.assemblerSlots - 1 do
-    ingredients[i + 1] = world.containerItemAt(entity.id(), i)
+    if world.containerItemAt(entity.id(), i) ~= nil then
+      ingredients[i + 1] = world.containerItemAt(entity.id(), i).name
+    end
   end
 
   table.sort(ingredients)
-  for r, recipe in pairs(recipes) do
+  for r, recipe in pairs(self.recipes) do
     table.sort(recipe[1])
-    if ingredients == recipe[1] and canAddItems(recipe[2]) then
-      addItems(recipe[2]) 
+    if compare(ingredients, recipe[1]) and canAddItems(recipe[2]) then
+      addItems(recipe[2])
       for i = 0, self.assemblerSlots - 1 do
         world.containerConsumeAt(entity.id(), i, 1)
       end
@@ -49,7 +53,7 @@ function canAddItems(items)
 end
 
 function canAddItem(i)
-  for x = 1, world.containerSize(entity.id()) - 1, 1 do
+  for x = self.assemblerSlots, world.containerSize(entity.id()), 1 do
     local slotItem = world.containerItemAt(entity.id(), x)
 
     if not slotItem or slotItem.name == i then
@@ -69,7 +73,7 @@ function addItems(items)
 end
 
 function addItem(i)
-  for x = 1, world.containerSize(entity.id()) - 1, 1 do
+  for x = self.assemblerSlots, world.containerSize(entity.id()), 1 do
     local slotItem = world.containerItemAt(entity.id(), x)
 
     if not slotItem or slotItem.name == i then
