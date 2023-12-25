@@ -13,7 +13,7 @@ function update(dt)
   if self.timer < self.timerMax then return end
   self.timer = 0
 
-  for x = 0, world.containerSize(entity.id()), 1 do
+  for x = 0, world.containerSize(entity.id()) - 1, 1 do
     for f, fuel in pairs(self.fuelsList) do
       if fuel[2] == world.containerItemAt(entity.id(), x) then
         world.containerConsumeAt(entity.id(), x, 1)

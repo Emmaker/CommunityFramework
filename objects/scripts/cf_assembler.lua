@@ -53,7 +53,7 @@ function canAddItems(items)
 end
 
 function canAddItem(i)
-  for x = self.assemblerSlots, world.containerSize(entity.id()), 1 do
+  for x = self.assemblerSlots, world.containerSize(entity.id()) - 1, 1 do
     local slotItem = world.containerItemAt(entity.id(), x)
 
     if not slotItem or slotItem.name == i then
@@ -73,7 +73,7 @@ function addItems(items)
 end
 
 function addItem(i)
-  for x = self.assemblerSlots, world.containerSize(entity.id()), 1 do
+  for x = self.assemblerSlots, world.containerSize(entity.id()) - 1, 1 do
     local slotItem = world.containerItemAt(entity.id(), x)
 
     if not slotItem or slotItem.name == i then
