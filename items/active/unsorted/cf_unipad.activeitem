@@ -1,0 +1,13 @@
+{
+  "itemName" : "cf_unipad",
+  "price" : 100,
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "category" : "Tool",
+  "inventoryIcon" : "cf_unipad.png",
+  "shortdescription" : "UniPad",
+  "description" : "Remotely access your SAIL",
+
+  "twoHanded" : true,
+  "scripts" : ["cf_unipad.lua"]
+}
