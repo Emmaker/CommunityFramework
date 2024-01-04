@@ -15,6 +15,8 @@ function init()
   
   populateTabsList()
   widget.clearListItems(self.list)
+  widget.setText("selectLabel", "Collection")
+  widget.setVisible("emptyLabel", true)
 end
 
 function update(dt)

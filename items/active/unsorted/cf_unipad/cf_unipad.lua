@@ -6,14 +6,14 @@ function activate(fireMode, shiftHeld)
             if world.type() == "unknown" then
                 activeItem.interact("scriptPane", "/interface/ai/cf_ai.config")
             else
-                -- Unipad
+                activeItem.interact("scriptPane", "/interface/scripted/cf_unipad/cf_unipad.config")
             end
         end
     elseif fireMode == "alt" then
         if shiftHeld then
             activeItem.interact("scriptPane", "/interface/scripted/collections/collectionsgui.config")
         else
-            -- Unipad
+            activeItem.interact("scriptPane", "/interface/scripted/cf_unipad/cf_unipad.config")
         end
     end
 end
