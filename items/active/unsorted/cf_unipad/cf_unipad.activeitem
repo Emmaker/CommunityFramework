@@ -6,7 +6,9 @@
   "category" : "Tool",
   "inventoryIcon" : "cf_unipad.png",
   "shortdescription" : "UniPad",
-  "description" : "Remotely access your SAIL",
+  "description" : "Easily access multiple interfaces at the press of a button!",
+
+  "learnBlueprintsOnPickup" : [ "cf_unipad" ],
 
   "twoHanded" : true,
   "scripts" : ["cf_unipad.lua"]

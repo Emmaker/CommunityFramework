@@ -1,0 +1,10 @@
+{
+  "input" : [
+    { "item" : "money", "count" : 100 }
+  ],
+  "output" : {
+    "item" : "cf_unipad",
+    "count" : 1
+  },
+  "groups" : [ "plain", "all", "tools" ]
+}
