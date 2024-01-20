@@ -1,4 +1,4 @@
-![Logo](interface/title/firstlogo.png)
+![Logo](interface/title/FirstLogo.png)
 # About
 Community Framework is a mod for Starbound which adds new scripts and functionality to Starbound which other modders may use and build off of. This mod adds nothing to the gameplay by itself.
 
