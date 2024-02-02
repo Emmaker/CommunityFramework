@@ -47,7 +47,6 @@ function cf_power.pushPower(nodeID, num)
 
     while not promise do end
     if promise:result() and power.takePower(promise:result()) then
-
       object.setOutputNodeLevel(nodeID, true)
       return true
     else
