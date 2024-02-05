@@ -130,7 +130,7 @@ function enableTech(techName)
 end
 
 function updateEquippedIcons()
-  for _,slot in pairs({"Head", "Body", "Legs"}) do
+  for _,slot in pairs({"Head", "Body", "Legs", "Suit"}) do
     local tech = player.equippedTech(slot)
     if tech and self.techs[tech] then
       widget.setImage(string.format("techIcon%s", slot), self.techs[tech].icon)
