@@ -104,6 +104,7 @@ function setSelectedSlot(slot)
   widget.setVisible("imgSelectedHead", slot == "Head")
   widget.setVisible("imgSelectedBody", slot == "Body")
   widget.setVisible("imgSelectedLegs", slot == "Legs")
+  widget.setVisible("imgSelectedSuit", slot == "Suit")
 end
 
 function animateSelection(dt)
