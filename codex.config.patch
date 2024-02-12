@@ -1,0 +1,3 @@
+[
+	{ "op" : "add", "path" : "/defaultItemConfig/scripts", "value" : ["/scripts/cf_codex.lua"] }
+]
