@@ -1,113 +1,92 @@
-require "/scripts/util.lua"
-require "/scripts/vec2.lua"
-require "/scripts/rect.lua"
-
 function init()
-  self.tabsList = "scrollAreaTabs.collectionTabList"
-  self.list = "scrollArea.collectionList"
+    self.fullList = "scrollArea.fullList"
+    self.compactList = "scrollArea.compactList"
+    self.text = "textScrollArea.text"
 
-  self.iconSize = config.getParameter("iconSize")
+    widget.setText(self.text, "Select any item on the left to continue...")
 
-  self.currentCollectables = {}
-  self.playerCollectables = {}
-
-  self.currentTab = false
-  
-  populateTabsList()
-  widget.clearListItems(self.list)
-  widget.setText("selectLabel", "Collection")
-  widget.setVisible("emptyLabel", true)
+    changeListMode()
+    populateLists()
 end
 
-function update(dt)
-  if self.collectionName and self.collectionName ~= selected then
-    local selected = widget.getListSelected(self.tabsList)
-    if self.collectionName ~= selected then
-      populateList()
-    else
-      for _,collectable in pairs(player.collectables(self.collectionName)) do
-        if not self.playerCollectables[collectable] then
-          populateList()
-          break
+function populateLists()
+    widget.clearListItems(self.fullList)
+    widget.clearListItems(self.compactList)
+
+    self.listMode = widget.getSelectedData("listModeTabs")
+    if self.listMode == "full" then
+        for _, configItem in pairs(config.getParameter("listConfig")) do
+            if configItem.condition then
+                require(configItem.condition[1])
+                if _ENV[configItem.condition[2]]() then
+                    local item = widget.addListItem(self.fullList)
+
+                    widget.setImage(string.format("%s.%s.icon", self.fullList, item), configItem.icon)
+                    widget.setText(string.format("%s.%s.name", self.fullList, item), configItem.name)
+                    widget.setData(string.format("%s.%s", self.fullList, item), configItem.action)
+                end
+            else
+                local item = widget.addListItem(self.fullList)
+
+                widget.setImage(string.format("%s.%s.icon", self.fullList, item), configItem.icon)
+                widget.setText(string.format("%s.%s.name", self.fullList, item), configItem.name)
+                widget.setData(string.format("%s.%s", self.fullList, item), configItem.action)
+            end
         end
-      end
-    end
-  end
-end
+    elseif self.listMode == "compact" then
+        for _, configItem in pairs(config.getParameter("listConfig")) do
+            if configItem.condition then
+                require(configItem.condition[1])
+                if _ENV[configItem.condition[2]]() then
+                    local item = widget.addListItem(self.compactList)
 
-function populateTabsList()
-  widget.clearListItems(self.tabsList)
-  tabs = config.getParameter("collectionTabs")
+                    widget.setImage(string.format("%s.%s.icon", self.compactList, item), configItem.icon)
+                    widget.setData(string.format("%s.%s", self.compactList, item), configItem.action)
+                end
+            else
+                local item = widget.addListItem(self.compactList)
 
-  for _, tab in pairs(tabs) do
-    local item = widget.addListItem(self.tabsList)
-
-    widget.setImage(string.format("%s.%s.icon", self.tabsList, item), tab.deselectIcon)
-    widget.setData(string.format("%s.%s", self.tabsList, item), { tab.name, tab.selectIcon, tab.deselectIcon })
-  end
-end
-
-function populateList()
-  widget.clearListItems(self.list)
-  self.collectionName = widget.getData(string.format("%s.%s", self.tabsList, widget.getListSelected(self.tabsList)))[1]
-
-  if self.collectionName then
-    local collection = root.collection(self.collectionName)
-    widget.setText("selectLabel", collection.title);
-    widget.setVisible("emptyLabel", false)
-
-    self.currentCollectables = {}
-
-    self.playerCollectables = {}
-    for _,collectable in pairs(player.collectables(self.collectionName)) do
-      self.playerCollectables[collectable] = true
-    end
-
-    local collectables = root.collectables(self.collectionName)
-    table.sort(collectables, function(a, b) return a.order < b.order end)
-    for _,collectable in pairs(collectables) do
-      local item = widget.addListItem(self.list)
-      
-      if collectable.icon ~= "" then
-        local imageSize = rect.size(root.nonEmptyRegion(collectable.icon))
-        local scaleDown = math.max(math.ceil(imageSize[1] / self.iconSize[1]), math.ceil(imageSize[2] / self.iconSize[2]))
-
-        if not self.playerCollectables[collectable.name] then
-          collectable.icon = string.format("%s?multiply=000000", collectable.icon)
+                widget.setImage(string.format("%s.%s.icon", self.compactList, item), configItem.icon)
+                widget.setData(string.format("%s.%s", self.compactList, item), configItem.action)
+            end
         end
-        widget.setImage(string.format("%s.%s.icon", self.list, item), collectable.icon)
-        widget.setImageScale(string.format("%s.%s.icon", self.list, item), 1 / scaleDown)
-      end
-      widget.setText(string.format("%s.%s.index", self.list, item), collectable.order)
-
-      self.currentCollectables[string.format("%s.%s", self.list, item)] = collectable;
     end
-  else
-    widget.setVisible("emptyLabel", true)
-    widget.setText("selectLabel", "Collection")
-  end
 end
 
-function createTooltip(screenPosition)
-  for widgetName, collectable in pairs(self.currentCollectables) do
-    if widget.inMember(widgetName, screenPosition) and self.playerCollectables[collectable.name] then
-      local tooltip = config.getParameter("tooltipLayout")
-      tooltip.title.value = collectable.title
-      tooltip.description.value = collectable.description
-      return tooltip
+function changeListMode()
+    self.listMode = widget.getSelectedData("listModeTabs")
+    if self.listMode == "full" then
+        widget.setVisible("scrollArea.fullList", true)
+        widget.setVisible("scrollArea.compactList", false)
+
+        populateLists()
+    elseif self.listMode == "compact" then
+        widget.setVisible("scrollArea.fullList", false)
+        widget.setVisible("scrollArea.compactList", true)
+
+        populateLists()
     end
-  end
 end
 
-function selectCollection(index, data)
-  if self.currentTab then
-    widget.setImage(string.format("%s.icon", self.currentTab), widget.getData(self.currentTab)[3])
-  end
-  
-  local selectedItem = widget.getListSelected(self.tabsList)
-  if not selectedItem then return end
+function selectItem()
+    self.listMode = widget.getSelectedData("listModeTabs")
+    if self.listMode == "full" then
+        local selectedFunction = widget.getData(string.format("%s.%s", self.fullList, widget.getListSelected(self.fullList)))
+        if not selectedFunction then return end
+        require(selectedFunction[1])
 
-  self.currentTab = string.format("%s.%s", self.tabsList, selectedItem)
-  widget.setImage(string.format("%s.icon", self.currentTab), widget.getData(self.currentTab)[2])
-  populateList()
+        local funcReturn = _ENV[selectedFunction[2]](selectedFunction[3])
+        if funcReturn and type(funcReturn) == "string" then
+            widget.setText(self.text, funcReturn)
+        end
+    elseif self.listMode == "compact" then
+        local selectedFunction = widget.getData(string.format("%s.%s", self.compactList, widget.getListSelected(self.compactList)))
+        if not selectedFunction then return end
+        require(selectedFunction[1])
+        
+        local funcReturn = _ENV[selectedFunction[2]](selectedFunction[3])
+        if funcReturn and type(funcReturn) == "string" then
+            widget.setText(self.text, funcReturn)
+        end
+    end
 end
