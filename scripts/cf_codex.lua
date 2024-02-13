@@ -3,6 +3,7 @@ function update()
         for _, playerId in pairs(world.playerQuery(fireableItem.ownerAimPosition(), 256)) do
             if world.entityHandItem(playerId, "primary") == item.name() or world.entityHandItem(playerId, "alt") == item.name() then
                 sb.logInfo("Unlocking %s for %s", item.name(), playerId)
+                world.sentEntityMessage(playerId, "cf_learncodex", item.name())
             end
         end
     end

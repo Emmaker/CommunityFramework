@@ -1,0 +1,3 @@
+[
+    { "op" : "add", "path" : "/genericScriptContexts/cf_codex", "value" : "/scripts/player/cf_codex.lua" }
+]
