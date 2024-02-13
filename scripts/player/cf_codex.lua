@@ -12,11 +12,11 @@ function init()
 end
 
 function learnCodex(name)
-    local knownCodices = player.getProperty("cf_knownCodices") or {}
+    local knownCodices = player.getProperty("cf.knownCodices") or {}
 
     if not contains(knownCodices, name) then
         table.insert(knownCodices, name)
-        player.setProperty("cf_knownCodices", knownCodices)
+        player.setProperty("cf.knownCodices", knownCodices)
         return true
     end
 
