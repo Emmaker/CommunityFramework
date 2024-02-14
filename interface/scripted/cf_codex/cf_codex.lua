@@ -35,22 +35,24 @@ function populateList()
 
         if self.categoryName == "other" then
             for _, codex in pairs(self.knownCodices) do
-                local data = root.assetJson(root.itemConfig(codex .. "-codex").directory .. codex .. ".codex")
+                local dir = root.itemConfig(codex .. "-codex").directory
+                local data = root.assetJson(dir .. codex .. ".codex")
                 if not data.species then
                     local item = widget.addListItem(self.list)
 
-                    widget.setImage(string.format("%s.%s.icon", self.list, item), data.icon)
+                    widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
                     widget.setText(string.format("%s.%s.name", self.list, item), data.name)
                     widget.setData(string.format("%s.%s", self.list, item), data.id)
                 end
             end
         else
             for _, codex in pairs(self.knownCodices) do
-                local data = root.assetJson(root.itemConfig(codex .. "-codex").directory .. codex .. ".codex")
+                local dir = root.itemConfig(codex .. "-codex").directory
+                local data = root.assetJson(dir .. codex .. ".codex")
                 if data.species == self.categoryName then
                     local item = widget.addListItem(self.list)
 
-                    widget.setImage(string.format("%s.%s.icon", self.list, item), data.icon)
+                    widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
                     widget.setText(string.format("%s.%s.name", self.list, item), data.name)
                     widget.setData(string.format("%s.%s", self.list, item), data.id)
                 end
