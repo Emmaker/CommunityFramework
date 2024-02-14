@@ -1,7 +1,8 @@
 require "/scripts/util.lua"
 
 function init()
-    message.setHandler("cf_learncodex", learnCodex)
+    message.setHandler("cf_learncodex", learnCodexHandler)
+    removeInvalidCodices()
 
     local cfg = root.assetJson("/player.config")
     local defaultCodices = cfg.defaultCodexes[player.species()] or {}
@@ -9,6 +10,10 @@ function init()
     for _, codex in pairs(defaultCodices) do
         learnCodex(codex)
     end
+end
+
+function learnCodexHandler(_, _, name)
+    learnCodex(name)
 end
 
 function learnCodex(name)
@@ -21,4 +26,16 @@ function learnCodex(name)
     end
 
     return false
+end
+
+function removeInvalidCodices()
+    local knownCodices = player.getProperty("cf.knownCodices") or {}
+
+    for c, codex in pairs(knownCodices) do
+        if not root.itemConfig(codex .. "-codex") then
+            table.remove(knownCodices, c)
+        end
+    end
+
+    player.setProperty("cf.knownCodices", knownCodices)
 end

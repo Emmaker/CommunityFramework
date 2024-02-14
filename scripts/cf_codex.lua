@@ -6,7 +6,7 @@ function update()
                 local codex = string.sub(item.name(), 1, length)
 
                 sb.logInfo("Unlocking codex %s for %s", codex, playerId)
-                world.sentEntityMessage(playerId, "cf_learncodex", codex)
+                world.sendEntityMessage(playerId, "cf_learncodex", codex)
             end
         end
     end

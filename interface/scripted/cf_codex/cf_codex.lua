@@ -1,14 +1,21 @@
+require "/scripts/util.lua"
+
 function init()
     self.tabsList = "scrollAreaTabs.bookTabList"
     self.list = "scrollArea.bookList"
 
     self.currentCodices = {}
+    self.currentContents = {}
 
     self.currentTab = false
+
+    self.currentPage = 0
+    self.maxPages = 0
 
     populateTabsList()
     widget.clearListItems(self.list)
     widget.setText("selectLabel", "Category")
+    widget.setText("pageNum", "0 of 0")
     widget.setText("titleLabel", "")
     widget.setText("pageText", "")
 end
@@ -41,8 +48,8 @@ function populateList()
                     local item = widget.addListItem(self.list)
 
                     widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
-                    widget.setText(string.format("%s.%s.name", self.list, item), data.name)
-                    widget.setData(string.format("%s.%s", self.list, item), data.id)
+                    widget.setText(string.format("%s.%s.name", self.list, item), data.title)
+                    widget.setData(string.format("%s.%s", self.list, item), data.longContentPages or data.contentPages)
                 end
             end
         else
@@ -53,8 +60,8 @@ function populateList()
                     local item = widget.addListItem(self.list)
 
                     widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
-                    widget.setText(string.format("%s.%s.name", self.list, item), data.name)
-                    widget.setData(string.format("%s.%s", self.list, item), data.id)
+                    widget.setText(string.format("%s.%s.name", self.list, item), data.title)
+                    widget.setData(string.format("%s.%s", self.list, item), data.longContentPages or data.contentPages)
                 end
             end
         end
@@ -75,13 +82,31 @@ function selectCategory()
 end
 
 function selectCodex()
+    self.currentContents = widget.getData(string.format("%s.%s", self.list, widget.getListSelected(self.list)))
 
+    if not self.currentContents then return end
+
+    self.currentPage = 1
+    self.maxPages = #self.currentContents
+
+    widget.setText("pageText", self.currentContents[self.currentPage])
+    widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
 end
 
 function prevPage()
+    if self.currentContents then
+        self.currentPage = util.clamp(self.currentPage - 1, 1, self.maxPages)
 
+        widget.setText("pageText", self.currentContents[self.currentPage])
+        widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
+    end
 end
 
 function nextPage()
+    if self.currentContents then
+        self.currentPage = util.clamp(self.currentPage + 1, 1, self.maxPages)
 
+        widget.setText("pageText", self.currentContents[self.currentPage])
+        widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
+    end
 end
