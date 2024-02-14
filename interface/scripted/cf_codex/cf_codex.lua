@@ -28,19 +28,20 @@ function populateTabsList()
       local item = widget.addListItem(self.tabsList)
   
       widget.setImage(string.format("%s.%s.icon", self.tabsList, item), tab.deselectIcon)
-      widget.setData(string.format("%s.%s", self.tabsList, item), { tab.name, tab.selectIcon, tab.deselectIcon })
+      widget.setData(string.format("%s.%s", self.tabsList, item), { tab.name, tab.species, tab.selectIcon, tab.deselectIcon })
     end
 end
 
 function populateList()
     widget.clearListItems(self.list)
     self.categoryName = widget.getData(string.format("%s.%s", self.tabsList, widget.getListSelected(self.tabsList)))[1]
+    self.categorySpecies = widget.getData(string.format("%s.%s", self.tabsList, widget.getListSelected(self.tabsList)))[2]
 
-    if self.categoryName then
+    if self.categoryName and self.categorySpecies then
         self.knownCodices = player.getProperty("cf.knownCodices") or {}
-        widget.setText("selectLabel", "Choose " .. self.categoryName:gsub("^%l", string.upper) .. " Codex")
+        widget.setText("selectLabel", "Choose " .. self.categoryName .. " Codex")
 
-        if self.categoryName == "other" then
+        if self.categorySpecies == "other" then
             for _, codex in pairs(self.knownCodices) do
                 local dir = root.itemConfig(codex .. "-codex").directory
                 local data = root.assetJson(dir .. codex .. ".codex")
@@ -56,7 +57,7 @@ function populateList()
             for _, codex in pairs(self.knownCodices) do
                 local dir = root.itemConfig(codex .. "-codex").directory
                 local data = root.assetJson(dir .. codex .. ".codex")
-                if data.species == self.categoryName then
+                if data.species == self.categorySpecies then
                     local item = widget.addListItem(self.list)
 
                     widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
@@ -70,14 +71,14 @@ end
 
 function selectCategory()
     if self.currentTab then
-        widget.setImage(string.format("%s.icon", self.currentTab), widget.getData(self.currentTab)[3])
+        widget.setImage(string.format("%s.icon", self.currentTab), widget.getData(self.currentTab)[4])
       end
       
       local selectedItem = widget.getListSelected(self.tabsList)
       if not selectedItem then return end
     
       self.currentTab = string.format("%s.%s", self.tabsList, selectedItem)
-      widget.setImage(string.format("%s.icon", self.currentTab), widget.getData(self.currentTab)[2])
+      widget.setImage(string.format("%s.icon", self.currentTab), widget.getData(self.currentTab)[3])
       populateList()
 end
 
