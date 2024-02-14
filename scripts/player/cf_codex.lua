@@ -7,7 +7,7 @@ function init()
     local defaultCodices = cfg.defaultCodexes[player.species()] or {}
 
     for _, codex in pairs(defaultCodices) do
-        learnCodex(codex .. "-codex")
+        learnCodex(codex)
     end
 end
 
