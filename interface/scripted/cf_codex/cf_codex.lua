@@ -4,9 +4,7 @@ function init()
     self.tabsList = "scrollAreaTabs.bookTabList"
     self.list = "scrollArea.bookList"
 
-    self.currentCodices = {}
-    self.currentContents = {}
-
+    self.currentContents = false
     self.currentTab = false
 
     self.currentPage = 0
