@@ -50,7 +50,7 @@ function populateList()
 
                     widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
                     widget.setText(string.format("%s.%s.name", self.list, item), data.title)
-                    widget.setData(string.format("%s.%s", self.list, item), data.longContentPages or data.contentPages)
+                    widget.setData(string.format("%s.%s", self.list, item), { data.longContentPages or data.contentPages, data.title })
                 end
             end
         else
@@ -62,7 +62,7 @@ function populateList()
 
                     widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
                     widget.setText(string.format("%s.%s.name", self.list, item), data.title)
-                    widget.setData(string.format("%s.%s", self.list, item), data.longContentPages or data.contentPages)
+                    widget.setData(string.format("%s.%s", self.list, item), { data.longContentPages or data.contentPages, data.title })
                 end
             end
         end
@@ -83,15 +83,19 @@ function selectCategory()
 end
 
 function selectCodex()
-    self.currentContents = widget.getData(string.format("%s.%s", self.list, widget.getListSelected(self.list)))
+    if widget.getListSelected(self.list) then
+        self.currentContents = widget.getData(string.format("%s.%s", self.list, widget.getListSelected(self.list)))[1]
+        self.currentTitle = widget.getData(string.format("%s.%s", self.list, widget.getListSelected(self.list)))[2]
 
-    if not self.currentContents then return end
+        if not self.currentContents then return end
 
-    self.currentPage = 1
-    self.maxPages = #self.currentContents
+        self.currentPage = 1
+        self.maxPages = #self.currentContents
 
-    widget.setText("pageText", self.currentContents[self.currentPage])
-    widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
+        widget.setText("pageText", self.currentContents[self.currentPage])
+        widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
+        widget.setText("titleLabel", self.currentTitle)
+    end
 end
 
 function prevPage()
