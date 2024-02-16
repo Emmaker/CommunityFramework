@@ -2,7 +2,9 @@ require "/scripts/util.lua"
 
 function init()
     message.setHandler("cf_learncodex", learnCodexHandler)
-    removeInvalidCodices()
+    message.setHandler("cf_getcodices", getCodices)
+
+    self.knownCodices = player.getProperty("cf_knownCodices") or {}
 
     local cfg = root.assetJson("/player.config")
     local defaultCodices = cfg.defaultCodexes[player.species()] or {}
@@ -10,6 +12,12 @@ function init()
     for _, codex in pairs(defaultCodices) do
         learnCodex(codex)
     end
+
+    removeInvalidCodices()
+end
+
+function getCodices()
+    return self.knownCodices
 end
 
 function learnCodexHandler(_, _, name)
@@ -17,25 +25,21 @@ function learnCodexHandler(_, _, name)
 end
 
 function learnCodex(name)
-    local knownCodices = player.getProperty("cf.knownCodices") or {}
+    local knownCodices = player.getProperty("cf_knownCodices") or {}
 
-    if not contains(knownCodices, name) then
-        knownCodices[#knownCodices + 1] = name
-        player.setProperty("cf.knownCodices", knownCodices)
-        return true
+    if not contains(self.knownCodices, name) then
+        table.insert(self.knownCodices, name)
     end
-
-    return false
 end
 
 function removeInvalidCodices()
-    local knownCodices = player.getProperty("cf.knownCodices") or {}
-
-    for c, codex in pairs(knownCodices) do
+    for c, codex in pairs(self.knownCodices) do
         if not root.itemConfig(codex .. "-codex") then
-            table.remove(knownCodices, c)
+            table.remove(self.knownCodices, c)
         end
-    end
+    end 
+end
 
-    player.setProperty("cf.knownCodices", knownCodices)
+function uninit()
+    player.setProperty("cf_knownCodices", self.knownCodices)
 end

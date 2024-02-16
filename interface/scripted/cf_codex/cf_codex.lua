@@ -36,11 +36,18 @@ function populateList()
     self.categorySpecies = widget.getData(string.format("%s.%s", self.tabsList, widget.getListSelected(self.tabsList)))[2]
 
     if self.categoryName and self.categorySpecies then
-        self.knownCodices = player.getProperty("cf.knownCodices") or {}
+        local promise = world.sendEntityMessage(player.id(), "cf_getcodices")
+        while not promise do end
+
+        sb.logInfo("%s", promise:result())
+
+        local knownCodices = promise:result()
+        if not knownCodices then return end
+
         widget.setText("selectLabel", "Choose " .. self.categoryName .. " Codex")
 
         if self.categorySpecies == "other" then
-            for _, codex in pairs(self.knownCodices) do
+            for _, codex in pairs(knownCodices) do
                 local dir = root.itemConfig(codex .. "-codex").directory
                 local data = root.assetJson(dir .. codex .. ".codex")
                 if not data.species then
@@ -52,7 +59,7 @@ function populateList()
                 end
             end
         else
-            for _, codex in pairs(self.knownCodices) do
+            for _, codex in pairs(knownCodices) do
                 local dir = root.itemConfig(codex .. "-codex").directory
                 local data = root.assetJson(dir .. codex .. ".codex")
                 if data.species == self.categorySpecies then
