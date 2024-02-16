@@ -20,7 +20,7 @@ function learnCodex(name)
     local knownCodices = player.getProperty("cf.knownCodices") or {}
 
     if not contains(knownCodices, name) then
-        table.insert(knownCodices, name)
+        knownCodices[#knownCodices + 1] = name
         player.setProperty("cf.knownCodices", knownCodices)
         return true
     end
