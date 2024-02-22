@@ -16,6 +16,11 @@ function init()
     widget.setText("pageNum", "0 of 0")
     widget.setText("titleLabel", "")
     widget.setText("pageText", "")
+
+    widget.setVisible("prevButton", false)
+    widget.setVisible("prevButtonDisabled", true)
+    widget.setVisible("nextButton", false)
+    widget.setVisible("nextButtonDisabled", true)
 end
 
 function populateTabsList()
@@ -100,23 +105,38 @@ function selectCodex()
         widget.setText("pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
         widget.setText("titleLabel", self.currentTitle)
+
+        widget.setVisible("prevButton", false)
+        widget.setVisible("prevButtonDisabled", true)
+        widget.setVisible("nextButton", self.currentPage ~= self.maxPages)
+        widget.setVisible("nextButtonDisabled", self.currentPage == self.maxPages)
     end
 end
 
 function prevPage()
     if self.currentContents then
-        self.currentPage = util.clamp(self.currentPage - 1, 1, self.maxPages)
+        self.currentPage = self.currentPage + 1
 
         widget.setText("pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
+
+        widget.setVisible("prevButton", self.currentPage ~= 1)
+        widget.setVisible("prevButtonDisabled", self.currentPage == 1)
+        widget.setVisible("nextButton", self.currentPage ~= self.maxPages)
+        widget.setVisible("nextButtonDisabled", self.currentPage == self.maxPages)
     end
 end
 
 function nextPage()
     if self.currentContents then
-        self.currentPage = util.clamp(self.currentPage + 1, 1, self.maxPages)
+        self.currentPage = self.currentPage + 1
 
         widget.setText("pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
+
+        widget.setVisible("prevButton", self.currentPage ~= 1)
+        widget.setVisible("prevButtonDisabled", self.currentPage == 1)
+        widget.setVisible("nextButton", self.currentPage ~= self.maxPages)
+        widget.setVisible("nextButtonDisabled", self.currentPage == self.maxPages)
     end
 end
