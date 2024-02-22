@@ -43,36 +43,42 @@ function populateList()
     if self.categoryName and self.categorySpecies then
         local promise = world.sendEntityMessage(player.id(), "cf_getcodices")
         while not promise do end
+        local result = promise:result()
+        if not result then return end
 
-        sb.logInfo("%s", promise:result())
-
-        local knownCodices = promise:result()
-        if not knownCodices then return end
+        self.knownCodices = result[1]
+        self.readCodices = result[2]
 
         widget.setText("selectLabel", "Choose " .. self.categoryName .. " Codex")
 
         if self.categorySpecies == "other" then
-            for _, codex in pairs(knownCodices) do
+            for _, codex in pairs(self.knownCodices) do
                 local dir = root.itemConfig(codex .. "-codex").directory
                 local data = root.assetJson(dir .. codex .. ".codex")
                 if not data.species then
                     local item = widget.addListItem(self.list)
 
-                    widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
+                    widget.setImage(string.format("%s.%s.icon", self.list, item), util.absolutePath(dir, data.icon))
                     widget.setText(string.format("%s.%s.name", self.list, item), data.title)
-                    widget.setData(string.format("%s.%s", self.list, item), { data.longContentPages or data.contentPages, data.title })
+                    widget.setData(string.format("%s.%s", self.list, item), { data.longContentPages or data.contentPages, data.title, codex })
+                    widget.setVisible(string.format("%s.%s.new", self.list, item), not contains(self.readCodices, codex))
+
+                    sb.logInfo("%s %s", self.readCodices, codex)
                 end
             end
         else
-            for _, codex in pairs(knownCodices) do
+            for _, codex in pairs(self.knownCodices) do
                 local dir = root.itemConfig(codex .. "-codex").directory
                 local data = root.assetJson(dir .. codex .. ".codex")
                 if data.species == self.categorySpecies then
                     local item = widget.addListItem(self.list)
 
-                    widget.setImage(string.format("%s.%s.icon", self.list, item), dir .. data.icon)
+                    widget.setImage(string.format("%s.%s.icon", self.list, item), util.absolutePath(dir, data.icon))
                     widget.setText(string.format("%s.%s.name", self.list, item), data.title)
-                    widget.setData(string.format("%s.%s", self.list, item), { data.longContentPages or data.contentPages, data.title })
+                    widget.setData(string.format("%s.%s", self.list, item), { data.longContentPages or data.contentPages, data.title, codex })
+                    widget.setVisible(string.format("%s.%s.new", self.list, item), not contains(self.readCodices, codex))
+
+                    sb.logInfo("%s %s %s", self.readCodices, codex, contains(self.readCodices, codex))
                 end
             end
         end
@@ -110,12 +116,16 @@ function selectCodex()
         widget.setVisible("prevButtonDisabled", true)
         widget.setVisible("nextButton", self.currentPage ~= self.maxPages)
         widget.setVisible("nextButtonDisabled", self.currentPage == self.maxPages)
+
+        widget.setVisible(string.format("%s.%s.new", self.list, widget.getListSelected(self.list)), false)
+        table.insert(self.readCodices, widget.getData(string.format("%s.%s", self.list, widget.getListSelected(self.list)))[3])
+        world.sendEntityMessage(player.id(), "cf_setcodices", self.readCodices)
     end
 end
 
 function prevPage()
     if self.currentContents then
-        self.currentPage = self.currentPage + 1
+        self.currentPage = util.clamp(self.currentPage - 1, 1, self.maxPages)
 
         widget.setText("pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
@@ -129,7 +139,7 @@ end
 
 function nextPage()
     if self.currentContents then
-        self.currentPage = self.currentPage + 1
+        self.currentPage = util.clamp(self.currentPage + 1, 1, self.maxPages)
 
         widget.setText("pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
