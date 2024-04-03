@@ -1,6 +1,0 @@
-[
-    { "op" : "add", "path" : "/starterTreasure/0/1/fill/-", "value" : {
-            "item"  : "cf_unipad"
-        } 
-    }
-]
