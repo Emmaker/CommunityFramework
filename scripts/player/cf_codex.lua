@@ -3,10 +3,8 @@ require "/scripts/util.lua"
 function init()
     message.setHandler("cf_learncodex", learnCodexHandler)
     message.setHandler("cf_getcodices", getCodices)
-    message.setHandler("cf_setcodices", setCodices)
 
     self.knownCodices = player.getProperty("cf_knownCodices") or {}
-    self.readCodices = player.getProperty("cf_readCodices") or {}
 
     local cfg = root.assetJson("/player.config")
     local defaultCodices = cfg.defaultCodexes[player.species()] or {}
@@ -19,13 +17,7 @@ function init()
 end
 
 function getCodices()
-    return { self.knownCodices, self.readCodices }
-end
-
-function setCodices(_, _, readCodices)
-    if type(readCodices) == "table" then
-        self.readCodices = readCodices
-    end
+    return self.knownCodices
 end
 
 function learnCodexHandler(_, _, name)
@@ -48,5 +40,4 @@ end
 
 function uninit()
     player.setProperty("cf_knownCodices", self.knownCodices)
-    player.setProperty("cf_readCodices", self.readCodices)
 end
