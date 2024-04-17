@@ -1,6 +1,6 @@
 Community Framework's power system is a powerful framework from which other modders can create machinery that requires power to run. Machines can generate, consume, and store power through this framework.
 
-When using the framework, you should require `cf_power.lua` in a top-level statement and **always** allow the script's `init` function to run first. If you need to implement your own `init` function, you can run the `cf_power.lua` `init` by storing it as a variable (typically named `pInit`) as a top-level statement and calling it in your `init`.
+When using the framework, you should require `cf_power.lua` in a top-level statement and **always** allow the script's `init` function to run first. If you need to implement your own `init` function, you can run the `cf_power.lua` `init` by storing it as a variable (typically named `pInit`) as a top-level statement and calling it in your `init`. You can try to run your own `init` independently, but you will have to set some values and hooks by yourself, which is **not** supported behavior.
 
 Connections between machines using the framework are made through wires, and power is sent between machines through power messages. Each message is a table containing three keys: `power`, `voltage`, and `alternating`. 
 The `power` key specifies the amount of power being sent in the message. 
