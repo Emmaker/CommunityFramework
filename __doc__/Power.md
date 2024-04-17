@@ -9,7 +9,7 @@ The `alternating` key specifies if the message is AC (alternating current). When
 
 ---
 
-#### `int` cf_power.maxPower()
+#### `int` cf_power.getMaxPower()
 
 Returns the maximum power capacity.
 
