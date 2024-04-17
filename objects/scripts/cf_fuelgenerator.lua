@@ -1,4 +1,4 @@
-require "/scripts/cf_power.lua"
+require "/objects/scripts/cf_power.lua"
 
 pInit = init
 function init()
