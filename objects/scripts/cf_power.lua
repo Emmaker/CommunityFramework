@@ -3,8 +3,8 @@ cf_power = {}
 
 function init()
   storage.maxPower = config.getParameter("maxPower", 0)
-  storage.power = config.getParameter("startPower", 0)
   storage.voltage = config.getParameter("voltage", 0)
+  storage.power = storage.power or config.getParameter("startPower", 0)
   
   message.setHandler("cf_power", cf_power.handler)
 end
@@ -41,7 +41,8 @@ end
 -- bool cf_power.consumePower(int power)
 function cf_power.consumePower(power)
   if storage.power >= power then
-    storage.power = storage.power - power
+    cf_power.setPower(storage.power - power)
+    return storage.power
   end
 
   return storage.power - power
@@ -51,7 +52,7 @@ end
 function cf_power.pushPower(nodeID, power, alternating, voltage)
   local outputTable = object.getOutputNodeIds(nodeID)
   if #outputTable > 0 or storage.power < power then
-    return false
+    return 0
   end
 
   power = power / #outputTable
@@ -64,7 +65,7 @@ function cf_power.pushPower(nodeID, power, alternating, voltage)
       alternating = alternating or false
     }
 
-    power.consumePower(power)
+    cf_power.consumePower(power)
     promise = world.sendEntityMessage(outputTable[i], "cf_power", message)
 
     while not promise do end
@@ -72,15 +73,15 @@ function cf_power.pushPower(nodeID, power, alternating, voltage)
       message = promise:result()
       if message.voltage and message.voltage > storage.voltage then
         storage.power = 0
-        object.setOutputNodeLevel(nodeID, true)
+        object.setOutputNodeLevel(nodeID, false)
         return -1
       end
 
-      power.createPower(promise:result().power)
+      cf_power.createPower(promise:result().power)
       object.setOutputNodeLevel(nodeID, true)
       successes = successes + 1
     else
-      power.createPower(power)
+      cf_power.createPower(power)
       object.setOutputNodeLevel(nodeID, false)
     end
   end
