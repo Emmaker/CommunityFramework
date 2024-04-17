@@ -65,7 +65,7 @@ function cf_power.pushPower(nodeID, power, alternating, voltage)
     }
 
     power.consumePower(power)
-    promise = world.sendEntityMessage(outputTable[i], "cf_power", power)
+    promise = world.sendEntityMessage(outputTable[i], "cf_power", message)
 
     while not promise do end
     if promise:result() and type(promise:result()) == "table" then
