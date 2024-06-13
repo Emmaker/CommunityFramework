@@ -58,7 +58,7 @@ function cf_power.pushPower(nodeID, power, alternating, voltage)
   power = power / #outputTable
   local successes = 0
 
-  for i = 0, #outputTable - 1, 1 do
+  for i, _ in pairs(outputTable) do
     local message = {
       power = power,
       voltage = voltage or storage.voltage,
@@ -66,7 +66,7 @@ function cf_power.pushPower(nodeID, power, alternating, voltage)
     }
 
     cf_power.consumePower(power)
-    promise = world.sendEntityMessage(outputTable[i], "cf_power", message)
+    promise = world.sendEntityMessage(i, "cf_power", message)
 
     while not promise do end
     if promise:result() and type(promise:result()) == "table" then
