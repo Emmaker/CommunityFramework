@@ -51,11 +51,12 @@ end
 -- int, int cf_power.pushPower(int nodeID, int power, [bool alternating], [int voltage])
 function cf_power.pushPower(nodeID, power, alternating, voltage)
   local outputTable = object.getOutputNodeIds(nodeID)
-  if #outputTable > 0 or storage.power < power then
+  local outputTableSize = util.tableSize(outputTable)
+  if outputTableSize < 1 or storage.power < power then
     return 0
   end
 
-  power = power / #outputTable
+  power = power / outputTableSize
   local successes = 0
 
   for i, _ in pairs(outputTable) do
