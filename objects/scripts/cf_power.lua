@@ -17,7 +17,7 @@ end
 -- void cf_power.setMaxPower(int power)
 function cf_power.setMaxPower(power)
   storage.maxPower = power
-  cf_setPower(storage.power)
+  cf_power.setPower(storage.power)
 end
 
 -- int cf_power.getPower()
@@ -95,7 +95,7 @@ function cf_power.handler(_, _, message)
     message.power = 0
   end
 
-  change = power.createPower(message.power)
+  change = cf_power.createPower(message.power)
   if message.alternating then
     message.power = message.power - change
     message.voltage = storage.voltage
