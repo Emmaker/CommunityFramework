@@ -4,9 +4,13 @@ function init()
     self.fullList = "scrollArea.fullList"
     self.compactList = "scrollArea.compactList"
 
-    self.listMode = "full"
+    self.listMode = config.getParameter("defaultListMode")
     self.listConfig = config.getParameter("listConfig")
 
+    table.sort(self.listConfig, function(a, b) 
+        return (a.weight or 0) > (b.weight or 0)
+    end)
+    
     populateLists()
 end
 
@@ -14,56 +18,31 @@ function populateLists()
     widget.clearListItems(self.fullList)
     widget.clearListItems(self.compactList)
 
-    if self.listMode == "full" then
-        for _, configItem in pairs(self.listConfig) do
-            if configItem.condition then
-                require(configItem.condition[1])
-                if _ENV[configItem.condition[2]]() then
-                    local item = widget.addListItem(self.fullList)
+    self.list = self.listMode == "full" and self.fullList or self.compactList
 
-                    widget.setImage(string.format("%s.%s.icon", self.fullList, item), util.absolutePath("/interface/scripted/collections/", configItem.icon))
-                    widget.setText(string.format("%s.%s.name", self.fullList, item), configItem.name)
-                    widget.setData(string.format("%s.%s", self.fullList, item), configItem.action)
-                end
-            else
-                local item = widget.addListItem(self.fullList)
-
-                widget.setImage(string.format("%s.%s.icon", self.fullList, item), util.absolutePath("/interface/scripted/collections/", configItem.icon))
-                widget.setText(string.format("%s.%s.name", self.fullList, item), configItem.name)
-                widget.setData(string.format("%s.%s", self.fullList, item), configItem.action)
+    for _, configItem in pairs(self.listConfig) do
+        if configItem.condition then
+            require(configItem.condition[1])
+            if not _ENV[configItem.condition[2]]() then
+                goto postadd
             end
         end
-    elseif self.listMode == "compact" then
-        for _, configItem in pairs(self.listConfig) do
-            if configItem.condition then
-                require(configItem.condition[1])
-                if _ENV[configItem.condition[2]]() then
-                    local item = widget.addListItem(self.compactList)
 
-                    widget.setImage(string.format("%s.%s.icon", self.compactList, item), util.absolutePath("/interface/scripted/collections/", configItem.icon))
-                    widget.setData(string.format("%s.%s", self.compactList, item), configItem.action)
-                end
-            else
-                local item = widget.addListItem(self.compactList)
+        local item = widget.addListItem(self.list)
 
-                widget.setImage(string.format("%s.%s.icon", self.compactList, item), util.absolutePath("/interface/scripted/collections/", configItem.icon))
-                widget.setData(string.format("%s.%s", self.compactList, item), configItem.action)
-            end
-        end
+        widget.setImage(string.format("%s.%s.icon", self.list, item), util.absolutePath("/interface/scripted/collections/", configItem.icon))
+        widget.setText(string.format("%s.%s.name", self.list, item), configItem.name)
+        widget.setData(string.format("%s.%s", self.list, item), configItem.action)
+
+        ::postadd::
     end
 end
 
 function selectItem()
-    local selectedFunction = nil
+    local selected = widget.getData(string.format("%s.%s", self.list, widget.getListSelected(self.list)))
 
-    if self.listMode == "full" then
-        selectedFunction = widget.getData(string.format("%s.%s", self.fullList, widget.getListSelected(self.fullList)))
-    elseif self.listMode == "compact" then
-        selectedFunction = widget.getData(string.format("%s.%s", self.compactList, widget.getListSelected(self.compactList)))
-    end
-
-    if selectedFunction then 
-        require(selectedFunction[1])
-        _ENV[selectedFunction[2]](selectedFunction[3])
+    if selected then
+        require(selected[1])
+        _ENV[selected[2]](type(selected[3]) == "table" and table.unpack(selected[3]) or selected[3] or nil)
     end
 end
