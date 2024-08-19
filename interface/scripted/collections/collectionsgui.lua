@@ -22,7 +22,11 @@ end
 
 function populateTabsList()
     widget.clearListItems(self.tabsList)
-    tabs = self.mode and config.getParameter("tabs.codex") or config.getParameter("tabs.collections")
+    local tabs = self.mode and config.getParameter("tabs.codex") or config.getParameter("tabs.collections")
+
+    table.sort(tabs, function(a, b)
+      return (a.weight or 0) > (b.weight or 0)
+    end)
 
     for _, tab in pairs(tabs) do
       local item = widget.addListItem(self.tabsList)
