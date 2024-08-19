@@ -2,7 +2,7 @@
   "author" : "JamesTheMaker",
   "description" : "[b]I have a Discord! Join it here [url=https://discord.gg/jQJqkg3VCK]here[/url]![/b]\n\nCommunity Framework is a mod that adds new scripts and functionality to Starbound for other modders to use and build upon. Community Framework is also extremely open, and virtually anyone can contribute to it [url=https://github.com/JamesTheMaker/Community-Framework]here[/url].\n\nThis mod adds nothing new to the gameplay itself, however, and instead you should explore some of the mods which use/support Community Framework [url=https://steamcommunity.com/workshop/filedetails/discussion/2968438274/4040357717321539261]here[/url]!\n\nSome of the functions include:\n[list]\n    [*]Fully dynamic collections UI!\n    [*]Compatible custom codex menu!\n    [*]Infinitely extendable Unibar!\n    [*]Custom power system!\n    [*]Item processors and assemblers!\n    [*]Powered machinery!\n    [*]And more to come!\n[/list]",
   "friendlyName" : "Community Framework",
-  "includes" : ["opensb_base"],
+  "includes" : ["opensb_base", "FrackinUniverse", "QuickbarMini", "StardustLib"],
   "link" : "steam://url/CommunityFilePage/2968438274",
   "name" : "communityframework",
   "priority" : -9999,
