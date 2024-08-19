@@ -39,7 +39,7 @@ function populateLists()
 
       widget.setImage(string.format("%s.%s.icon", self.list, item), configItem.icon)
       widget.setText(string.format("%s.%s.name", self.list, item), configItem.label)
-      widget.setData(string.format("%s.%s", self.list, item), { "/scripts/functions/cf_quickbaractions.lua", "cf_action", configItem.action })
+      widget.setData(string.format("%s.%s", self.list, item), { "/interface/scripted/cf_unibar/functions/cf_quickbaractions.lua", "cf_action", configItem.action })
     end
   end
 end

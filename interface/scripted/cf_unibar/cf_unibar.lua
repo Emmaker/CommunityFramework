@@ -4,8 +4,8 @@ function init()
     self.fullList = "scrollArea.fullList"
     self.compactList = "scrollArea.compactList"
 
-    self.listMode = config.getParameter("defaultListMode")
-    self.listConfig = config.getParameter("listConfig")
+    self.listMode = self.listMode or "full"
+    self.listConfig = root.assetJson("/interface/scripted/cf_unibar/icons/icons.config")
 
     table.sort(self.listConfig, function(a, b)
         return (a.weight or 0) > (b.weight or 0)
