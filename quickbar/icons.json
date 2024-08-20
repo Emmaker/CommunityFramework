@@ -1,5 +1,47 @@
 {
-    "items" : {
-        
+  "items" : {
+    "communityframework:changemode" : {
+      "label" : "^#ffb133;Change Mode",
+      "icon" : "/quickbar/changemode.png",
+      "weight" : -9999,
+      "action" : [ "changeMode" ]
+    },
+
+    "starbound:mattermanipulator" : {
+      "label" : "^#ffb133;Matter Manipulator",
+      "icon" : "/items/tools/miningtools/beamaxe.png?border=1;000000;00000000",
+      "weight" : -1150,
+      "action" : [ "pane", "/interface/scripted/mmupgrade/mmupgradegui.original.config" ],
+      "condition" : [ "statNegative", "noMatterManipulator" ]
+    },
+    "starbound:navigation" : {
+      "label" : "^#ffb133;Navigation",
+      "icon" : "/interface/statuses/lowgrav.png",
+      "weight" : -1145,
+      "action" : [ "pane", "/interface/cockpit/cockpit.config" ],
+      "condition" : [ "any", [ "admin" ], [ "ownShip" ] ]
+    },
+    "starbound:sail" : {
+      "label" : "^#ffb133;SAIL",
+      "icon" : "/objects/ship/techstation/apexrecordplayericon.png",
+      "weight" : -1140,
+      "action" : [ "sail" ],
+      "condition" : [ "ownShip" ]
+    },
+
+    "starbound:techpanel" : {
+      "label" : "^#bf7fff;Tech Panel",
+      "icon" : "/items/generic/other/techcard.png",
+      "weight" : -1000,
+      "action" : ["pane", "/interface/scripted/techupgrade/techupgradegui.config"],
+      "condition" : [ "admin" ]
+    },
+    "starbound:mechassembly" : {
+      "label" : "^#bf7fff;Mech Assembly",
+      "icon" : "/items/generic/salvage/salvagetier5.png",
+      "weight" : -1000,
+      "action" : [ "pane", "/interface/scripted/mechassembly/mechassemblygui.config" ],
+      "condition" : [ "admin" ]
     }
+  }
 }
