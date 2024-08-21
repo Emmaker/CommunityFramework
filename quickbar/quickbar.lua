@@ -2,17 +2,28 @@ require "/scripts/util.lua"
 require "/quickbar/conditions.lua"
 require "/quickbar/actions.lua"
 
+local colorSub = {
+  [ "^essential;" ] = "^#ffb133;",
+  [ "^admin;" ] = "^#bf7fff;",
+}
+
 function init()
   self.fullList = "scrollArea.fullList"
   self.compactList = "scrollArea.compactList"
 
   self.mode = self.mode or "full"
-  self.icons = root.assetJson("/quickbar/icons.json").items
+  self.icons = { }
 
-  sb.logInfo("Sorting...")
+  local items = root.assetJson("/quickbar/icons.json").items
+  for _, item in pairs(items) do
+    item.sort = string.lower(string.gsub(item.label, "(%b^;)", ""))
+    item.label = string.gsub(item.label, "(%b^;)", colorSub)
+    item.weight = item.weight or 0
+    table.insert(self.icons, item)
+  end
+
   table.sort(self.icons, function(a, b)
-      sb.logInfo("%s and %s", a, b)
-      return (a.weight or 0) < (b.weight or 0)
+    return a.weight < b.weight or (a.weight == b.weight and a.sort < b.sort)
   end)
 
   populateLists()
@@ -44,7 +55,6 @@ function selectIcon()
   local selected = widget.getData(list .. "." .. widget.getListSelected(list))
 
   if not selected.condition or condition(table.unpack(selected.condition)) then
-    sb.logInfo("%s", selected)
     action(table.unpack(selected.action))
     if selected.dismiss then pane.dismiss() end
   end
