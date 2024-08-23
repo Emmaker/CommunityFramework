@@ -49,6 +49,23 @@ function conditions.configExists(key)
   return root.assetJson(key) ~= nil
 end
 
+function conditions.techExists(name)
+  return root.hasTech(name)
+end
+
+function conditions.recipe(name)
+  return player.isAdmin() or player.bluePrintKnown({ name = name, count = 1 })
+end
+
+function conditions.hasFlaggedItem(flag, value)
+  return player.hasItemWithParameter(flag, value or true)
+end
+
+function conditions.hasTaggedItem(tag, count)
+  local c = player.inventoryTags()[tag] or 0
+  return c  >= (count or 1)
+end
+
 function conditions.exec(script, ...)
   if type(script) ~= "string" then return end
   params = { ... }
