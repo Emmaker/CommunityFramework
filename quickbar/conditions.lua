@@ -49,6 +49,11 @@ function conditions.configExists(key)
   return root.assetJson(key) ~= nil
 end
 
-function conditions.script(script)
-  return dofile(script)()
+function conditions.exec(script, ...)
+  if type(script) ~= "string" then return end
+  params = { ... }
+  _SBLOADED[script] = nil require(script)
+  params = nil
+
+  return type(bool) == "boolean" and bool
 end

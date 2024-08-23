@@ -20,6 +20,6 @@ end
 function actions.exec(script, ...)
   if type(script) ~= "string" then return end
   params = { ... }
-  dofile(script)
+  _SBLOADED[script] = nil require(script)
   params = nil
 end
