@@ -56,6 +56,6 @@ function selectIcon()
 
   if not selected.condition or condition(table.unpack(selected.condition)) then
     action(table.unpack(selected.action))
-    if selected.dismiss then pane.dismiss() end
+    if selected.dismiss == nil or selected.dismiss then pane.dismiss() end
   end
 end

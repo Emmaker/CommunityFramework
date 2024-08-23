@@ -4,7 +4,8 @@
       "label" : "^essential;Change Mode",
       "icon" : "/quickbar/changemode.png",
       "weight" : -9999,
-      "action" : [ "changeMode" ]
+      "action" : [ "changeMode" ],
+      "dismissQuickbar" : false
     },
 
     "starbound:mattermanipulator" : {
