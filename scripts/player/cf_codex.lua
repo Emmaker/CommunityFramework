@@ -10,7 +10,7 @@ function init()
     local defaultCodices = cfg.defaultCodexes[player.species()] or {}
 
     for _, codex in pairs(defaultCodices) do
-        learnCodex(codex)
+        learnCodex(root.itemConfig(codex .. "-codex").directory .. codex .. ".codex")
     end
 
     removeInvalidCodices()
@@ -32,7 +32,8 @@ end
 
 function removeInvalidCodices()
     for c, codex in pairs(self.knownCodices) do
-        if not root.itemConfig(codex .. "-codex") then
+        sb.logInfo("%s", codex)
+        if not root.assetJson(codex) then
             table.remove(self.knownCodices, c)
         end
     end

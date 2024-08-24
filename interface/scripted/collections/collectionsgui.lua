@@ -17,7 +17,27 @@ function init()
     self.currentPage = 0
     self.maxPages = 0
 
+    sortCodices()
     selectMode()
+end
+
+function sortCodices()
+  self.codices = { }
+
+  local promise = world.sendEntityMessage(player.id(), "cf_getcodices")
+  while not promise do end
+  local result = promise:result()
+  if not result then return end
+
+  for _, category in pairs(config.getParameter("tabs.codex")) do
+    self.codices[category.data] = { }
+  end
+
+  for _, codex in pairs(result) do
+    local species = root.assetJson(codex).species
+    species = self.codices[species] ~= nil and species or "other"
+    table.insert(self.codices[species], codex)
+  end
 end
 
 function populateTabsList()
@@ -49,30 +69,14 @@ function populateBookList()
 
         widget.setText("categoryLabel", "Choose " .. self.categoryName .. " Codex")
 
-        if self.categorySpecies == "other" then
-            for _, codex in pairs(result) do
-                local dir = root.itemConfig(codex .. "-codex").directory
-                local data = root.assetJson(dir .. codex .. ".codex")
-                if not data.species then
-                    local item = widget.addListItem(self.bookList)
+        for _, codex in pairs(self.codices[self.categorySpecies]) do
+          local data = root.assetJson(codex)
+          local dir = string.sub(codex, 1, string.len(codex) - string.len(data.id) - 6)
+          local item = widget.addListItem(self.bookList)
 
-                    widget.setImage(string.format("%s.%s.icon", self.bookList, item), util.absolutePath(dir, data.icon))
-                    widget.setText(string.format("%s.%s.name", self.bookList, item), data.title)
-                    widget.setData(string.format("%s.%s", self.bookList, item), { data.longContentPages or data.contentPages, data.title, codex })
-                end
-            end
-        else
-            for _, codex in pairs(result) do
-                local dir = root.itemConfig(codex .. "-codex").directory
-                local data = root.assetJson(dir .. codex .. ".codex")
-                if data.species == self.categorySpecies then
-                    local item = widget.addListItem(self.bookList)
-
-                    widget.setImage(string.format("%s.%s.icon", self.bookList, item), util.absolutePath(dir, data.icon))
-                    widget.setText(string.format("%s.%s.name", self.bookList, item), data.title)
-                    widget.setData(string.format("%s.%s", self.bookList, item), { data.longContentPages or data.contentPages, data.title, codex })
-                end
-            end
+          widget.setImage(string.format("%s.%s.icon", self.bookList, item), util.absolutePath(dir, data.icon))
+          widget.setText(string.format("%s.%s.name", self.bookList, item), data.title)
+          widget.setData(string.format("%s.%s", self.bookList, item), { data.longContentPages or data.contentPages, data.title, codex })
         end
     end
 end
