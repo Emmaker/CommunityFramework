@@ -17,6 +17,11 @@ function actions.pane(cfg)
   player.interact(cfg.type or "ScriptPane", cfg.config)
 end
 
+function actions.teleport(cfg)
+  if type(cfg) ~= "string" then return end
+  player.interact("OpenTeleportDialog", cfg)
+end
+
 function actions.exec(script, ...)
   if type(script) ~= "string" then return end
   params = { ... }

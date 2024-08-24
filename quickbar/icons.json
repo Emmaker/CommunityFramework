@@ -30,6 +30,21 @@
       "condition" : [ "ownShip" ]
     },
 
+    "starbound:shipteleport" : {
+      "label" : "Teleporter",
+      "icon" : "/interface/bookmarks/icons/beamdown.png",
+      "weight" : -1100,
+      "action" : [ "teleport", "/interface/warping/shipteleporter.config" ],
+      "condition" : [ "ownShip" ]
+    },
+    "starbound:remoteteleport" : {
+      "label" : "^admin;Teleporter",
+      "icon" : "/interface/bookmarks/icons/beamup.png",
+      "weight" : -1100,
+      "action" : [ "teleport", "/interface/warping/remoteteleporter.config" ],
+      "condition" : [ "all", [ "admin" ], [ "not", "ownShip" ] ]
+    },
+
     "starbound:techpanel" : {
       "label" : "^admin;Tech Panel",
       "icon" : "/items/generic/other/techcard.png",
