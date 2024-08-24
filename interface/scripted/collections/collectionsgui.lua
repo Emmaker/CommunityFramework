@@ -83,21 +83,21 @@ end
 
 function populateCollectionList()
   widget.clearListItems(self.collectionList)
-  self.collectionData = widget.getData(string.format("%s.%s", self.tabsList, widget.getListSelected(self.tabsList)))[2]
+  local selectedData = widget.getData(string.format("%s.%s", self.tabsList, widget.getListSelected(self.tabsList)))
 
-  if self.collectionData then
-    local collection = root.collection(self.collectionData)
-    widget.setText("collectionLabel", collection.title);
+  if selectedData then
+    local collection = root.collection(selectedData[2])
+    widget.setText("collectionLabel", selectedData[1]);
     widget.setVisible("emptyLabel", false)
 
     self.currentCollectables = {}
 
     self.playerCollectables = {}
-    for _,collectable in pairs(player.collectables(self.collectionData)) do
+    for _,collectable in pairs(player.collectables(selectedData[2])) do
       self.playerCollectables[collectable] = true
     end
 
-    local collectables = root.collectables(self.collectionData)
+    local collectables = root.collectables(selectedData[2])
     table.sort(collectables, function(a, b) return a.order < b.order end)
     for _,collectable in pairs(collectables) do
       local item = widget.addListItem(self.collectionList)
