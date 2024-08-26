@@ -1,8 +1,8 @@
 {
-  "author" : "JamesTheMaker",
-  "description" : "[b]I have a Discord! Join it here [url=https://discord.gg/jQJqkg3VCK]here[/url]![/b]\n\nCommunity Framework is a mod that adds new scripts and features to Starbound for modders and players alike. Community Framework is extremely open, and virtually anyone can contribute to it [url=https://github.com/Emmaker/CommunityFramework]here[/url].\n\n[h1]Quickbar[/h1]\nModernized Quickbar with faster, neater code and a built-in compact mode for big lists! Completely compatible with any existing Quickbar mods.\n\n[h1]Lexicon[/h1]\nCodex and Collections menu all-in-one, with new features! Unlimited categories, collections, and expanded reading area. Incompatible with Frackin' Universe's codex and XCustomCodex.\n\n[h1]cf_power.lua[/h1]\nA powerful, flexible power library featuring nuances such as voltage and alternating current! Just don't read into it too much.",
+  "author" : "Emmaker",
+  "description" : "[b]I have a Discord! Join it here [url=https://discord.gg/jQJqkg3VCK]here[/url]![/b]\n\nCommunity Framework is a mod that adds new scripts and features to Starbound for modders and players alike. Community Framework is extremely open, and virtually anyone can contribute to it [url=https://github.com/Emmaker/CommunityFramework]here[/url].\n\n[h1]Quickbar[/h1]\nModernized Quickbar with faster, neater code and a built-in compact mode for big lists! Completely compatible with any existing Quickbar mods.\n\n[h1]Lexicon[/h1]\nCodex and Collections menu all-in-one, with new features! Unlimited categories, collections, and expanded reading area. Documentation on how to add your own collections and codex categories can be found [url=https://github.com/Emmaker/CommunityFramework/blob/main/__doc__/Lexicon.md]here[/url].\n\n[h1]cf_power.lua[/h1]\nA powerful, flexible power library featuring nuances such as voltage and alternating current! Just don't read into it too much.",
   "friendlyName" : "Community Framework",
-  "includes" : ["opensb_base", "FrackinUniverse", "QuickbarMini", "StardustLib"],
+  "includes" : ["base", "opensb_base", "FrackinUniverse", "QuickbarMini", "StardustLib"],
   "link" : "steam://url/CommunityFilePage/2968438274",
   "name" : "communityframework",
   "priority" : -9999,
