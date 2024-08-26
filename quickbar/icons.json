@@ -1,7 +1,7 @@
 {
   "items" : {
     "communityframework:changemode" : {
-      "label" : "^essential;Change Mode",
+      "label" : "Change Mode",
       "icon" : "/quickbar/changemode.png",
       "weight" : -9999,
       "action" : [ "changeMode" ],
@@ -31,11 +31,11 @@
     },
 
     "starbound:shipteleport" : {
-      "label" : "Teleporter",
+      "label" : "^admin;Teleporter",
       "icon" : "/interface/bookmarks/icons/beamdown.png",
       "weight" : -1100,
       "action" : [ "teleport", "/interface/warping/shipteleporter.config" ],
-      "condition" : [ "ownShip" ]
+      "condition" : [ "all", [ "admin" ], [ "ownShip" ] ]
     },
     "starbound:remoteteleport" : {
       "label" : "^admin;Teleporter",
