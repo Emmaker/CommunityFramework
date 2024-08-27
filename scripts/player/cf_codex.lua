@@ -32,9 +32,12 @@ end
 
 function removeInvalidCodices()
     for c, codex in pairs(self.knownCodices) do
-        sb.logInfo("%s", codex)
-        if not root.assetJson(codex) then
+        if not pcall(function()
+          if not root.assetJson(codex) then
             table.remove(self.knownCodices, c)
+          end
+        end) then
+          table.remove(self.knownCodices, c)
         end
     end
 end
