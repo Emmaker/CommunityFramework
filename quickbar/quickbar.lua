@@ -42,8 +42,8 @@ function populateLists()
     if not icon.condition or condition(table.unpack(icon.condition)) then
       local item = list .. "." .. widget.addListItem(list)
 
-      widget.setImage(item .. ".icon", icon.icon)
-      widget.setText(item .. ".label", icon.label)
+      widget.setImage(item .. ".icon", icon.icon or "/assetmissing.png")
+      widget.setText(item .. ".label", icon.label or "")
       widget.setData(item, { condition = icon.condition, action = icon.action, dismiss = icon.dismissQuickbar })
     end
   end
