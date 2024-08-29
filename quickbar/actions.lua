@@ -1,7 +1,5 @@
 actions = actions or { }
-function action(id, ...) return actions[id](...) end
-
-function actions.__index() return end
+function action(id, ...) return actions[id] and actions[id](...) end
 
 function actions.changeMode()
   self.mode = self.mode == "compact" and "full" or "compact"

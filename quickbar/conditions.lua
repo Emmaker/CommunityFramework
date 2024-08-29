@@ -1,7 +1,5 @@
 conditions = conditions or { }
-function condition(id, ...) return conditions[id](...) end
-
-function conditions.__index() return true end
+function condition(id, ...) return conditions[id] and conditions[id](...) end
 
 conditions["not"] = function(...)
   return not condition(...)
