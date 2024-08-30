@@ -31,7 +31,8 @@ function loadIcons()
   -- Legacy icons
   for _, item in pairs(json.priority) do
     table.insert(self.icons, {
-      label = "^essential;" .. item.label,
+      sort = string.lower(string.gsub(item.label, "(%b^;)", "")),
+      label = string.gsub("^essential;" .. item.label, "(%b^;)", colorSub),
       icon = item.icon,
       weight = -1100,
       action = item.pane and { "pane", item.pane } or item.scriptAction and { "_legacy", item.scriptAction } or { },
@@ -40,7 +41,8 @@ function loadIcons()
   if player.isAdmin() then
     for _, item in pairs(json.admin) do
       table.insert(self.icons, {
-        label = "^admin;" .. item.label,
+        sort = string.lower(string.gsub(item.label, "(%b^;)", "")),
+        label = string.gsub("^admin;" .. item.label, "(%b^;)", colorSub),
         icon = item.icon,
         weight = -1000,
         action = item.pane and { "pane", item.pane } or item.scriptAction and { "_legacy", item.scriptAction } or { },
@@ -50,7 +52,8 @@ function loadIcons()
   end
   for _, item in pairs(json.normal) do
     table.insert(self.icons, {
-      label = item.label,
+      sort = string.lower(string.gsub(item.label, "(%b^;)", "")),
+      label = string.gsub(item.label, "(%b^;)", colorSub),
       icon = item.icon,
       weight = 0,
       action = item.pane and { "pane", item.pane } or item.scriptAction and { "_legacy", item.scriptAction } or { }
