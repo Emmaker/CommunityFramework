@@ -1,4 +1,6 @@
 {
+  "priority" : [ ], "admin" : [ ], "normal" : [ ],
+
   "items" : {
     "communityframework:changemode" : {
       "label" : "Change Mode",

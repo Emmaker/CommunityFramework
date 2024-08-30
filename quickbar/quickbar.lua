@@ -14,19 +14,52 @@ function init()
   self.mode = self.mode or "full"
   self.icons = { }
 
-  local items = root.assetJson("/quickbar/icons.json").items
-  for _, item in pairs(items) do
+  loadIcons()
+  populateLists()
+end
+
+function loadIcons()
+  local json = root.assetJson("/quickbar/icons.json")
+
+  for _, item in pairs(json.items) do
     item.sort = string.lower(string.gsub(item.label, "(%b^;)", ""))
     item.label = string.gsub(item.label, "(%b^;)", colorSub)
     item.weight = item.weight or 0
     table.insert(self.icons, item)
   end
 
+  -- Legacy icons
+  for _, item in pairs(json.priority) do
+    table.insert(self.icons, {
+      label = "^essential;" .. item.label,
+      icon = item.icon,
+      weight = -1100,
+      action = item.pane and { "pane", item.pane } or item.scriptAction and { "_legacy", item.scriptAction } or { },
+    })
+  end
+  if player.isAdmin() then
+    for _, item in pairs(json.admin) do
+      table.insert(self.icons, {
+        label = "^admin;" .. item.label,
+        icon = item.icon,
+        weight = -1000,
+        action = item.pane and { "pane", item.pane } or item.scriptAction and { "_legacy", item.scriptAction } or { },
+        condition = { "admin" }
+      })
+    end
+  end
+  for _, item in pairs(json.normal) do
+    table.insert(self.icons, {
+      label = item.label,
+      icon = item.icon,
+      weight = 0,
+      action = item.pane and { "pane", item.pane } or item.scriptAction and { "_legacy", item.scriptAction } or { }
+    })
+  end
+
   table.sort(self.icons, function(a, b)
     return a.weight < b.weight or (a.weight == b.weight and a.sort < b.sort)
   end)
-
-  populateLists()
 end
 
 function populateLists()

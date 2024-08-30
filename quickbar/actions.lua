@@ -26,3 +26,12 @@ function actions.exec(script, ...)
   _SBLOADED[script] = nil require(script)
   params = nil
 end
+
+-- Legacy function, don't know what the fuck it does
+function actions._legacy(s)
+  local m, e = (function() local it = string.gmatch(s, "[^:]+") return it(), it() end)()
+  local mf = string.format("/quickbar/%s.lua", m)
+  module = { }
+  _SBLOADED[mf] = nil require(mf)
+  module[e]() module = nil
+end
