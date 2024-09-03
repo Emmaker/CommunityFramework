@@ -130,9 +130,9 @@ function selectMode()
 
   widget.setVisible("scrollBGcodex", self.mode)
   widget.setVisible("scrollAreaBooks", self.mode)
+  widget.setVisible("scrollAreaText", self.mode)
   widget.setVisible("categoryLabel", self.mode)
   widget.setVisible("titleLabel", self.mode)
-  widget.setVisible("pageText", self.mode)
   widget.setVisible("pageNum", self.mode)
   widget.setVisible("pageLabel", self.mode)
   widget.setVisible("prevButton", false)
@@ -144,7 +144,7 @@ function selectMode()
   widget.setText("categoryLabel", "Category")
   widget.setText("pageNum", "0 of 0")
   widget.setText("titleLabel", "")
-  widget.setText("pageText", "")
+  widget.setText("scrollAreaText.pageText", "")
 
   widget.setVisible("scrollBGcollections", not self.mode)
   widget.setVisible("scrollAreaCollection", not self.mode)
@@ -179,7 +179,7 @@ function selectCodex()
         self.currentPage = 1
         self.maxPages = #self.currentContents
 
-        widget.setText("pageText", self.currentContents[self.currentPage])
+        widget.setText("scrollAreaText.pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
         widget.setText("titleLabel", self.currentTitle)
 
@@ -194,7 +194,7 @@ function prevPage()
     if self.currentContents then
         self.currentPage = util.clamp(self.currentPage - 1, 1, self.maxPages)
 
-        widget.setText("pageText", self.currentContents[self.currentPage])
+        widget.setText("scrollAreaText.pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
 
         widget.setVisible("prevButton", self.currentPage ~= 1)
@@ -208,7 +208,7 @@ function nextPage()
     if self.currentContents then
         self.currentPage = util.clamp(self.currentPage + 1, 1, self.maxPages)
 
-        widget.setText("pageText", self.currentContents[self.currentPage])
+        widget.setText("scrollAreaText.pageText", self.currentContents[self.currentPage])
         widget.setText("pageNum", self.currentPage .. " of " .. self.maxPages)
 
         widget.setVisible("prevButton", self.currentPage ~= 1)
