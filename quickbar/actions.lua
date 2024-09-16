@@ -7,15 +7,6 @@ function actions.changeMode()
 end
 
 function actions.sail()
-  local sailUIs = {
-    "/interface/ai/fu_byosai.config", -- FrackinUniverse
-    "/zb/newSail/newSail.config" -- Ztarbound
-  }
-
-  for _, ui in pairs(sailUIs) do
-    if root.assetJson(ui) then actions.pane(ui) return end
-  end
-
   player.interact("openAiInterface")
 end
 

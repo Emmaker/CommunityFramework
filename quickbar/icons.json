@@ -29,7 +29,7 @@
       "icon" : "/objects/ship/techstation/apexrecordplayericon.png",
       "weight" : -1140,
       "action" : [ "sail" ],
-      "condition" : [ "ownShip" ]
+      "condition" : [ "all", [ "ownShip" ], [ "not", "configExists", "/zb/newSail/newSail.config" ] ]
     },
 
     "starbound:shipteleport" : {
