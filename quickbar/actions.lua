@@ -13,7 +13,7 @@ function actions.sail()
   }
 
   for _, ui in pairs(sailUIs) do
-    if root.assetJson(ui) then actions.pane(ui) end
+    if root.assetJson(ui) then actions.pane(ui) return end
   end
 
   player.interact("openAiInterface")
