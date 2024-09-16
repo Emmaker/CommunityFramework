@@ -3,7 +3,7 @@ function update()
         if fireableItem.coolingDown() or not fireableItem.firing() then 
             self.doOnce = false 
         end
-    elseif fireableItem.coolingDown() and fireableItem.firing() then
+    elseif not fireableItem.coolingDown() and fireableItem.firing() then
         for _, playerId in pairs(world.playerQuery(fireableItem.ownerAimPosition(), 256)) do
             if world.entityHandItem(playerId, "primary") == item.name() or world.entityHandItem(playerId, "alt") == item.name() then
                 local file = root.itemConfig(item.name()).directory -- directory
