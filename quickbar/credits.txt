@@ -2,6 +2,7 @@ The following .png files are licensed under the MIT license listed below:
 /interface/quickbar.png
 /quickbar/button.png
 /quickbar/buttonhover.png
+/quickbar/metagui.png
 /quickbar/quickbar.png
 /quickbar/scrollbar.png
 

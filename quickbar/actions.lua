@@ -15,6 +15,11 @@ function actions.pane(cfg)
   player.interact(cfg.type or "ScriptPane", cfg.config)
 end
 
+function actions.ui(cfg, data) -- metaGUI
+  if not root.assetJson("/metagui/registry.json") then return end
+  player.interact("ScriptPane", { gui = { }, scripts = { "/metagui.lua" }, config = cfg, data = data })
+end
+
 function actions.teleport(cfg)
   if type(cfg) ~= "string" then return end
   player.interact("OpenTeleportDialog", cfg)

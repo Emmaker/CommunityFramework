@@ -60,6 +60,14 @@
       "weight" : -1000,
       "action" : [ "pane", "/interface/scripted/mechassembly/mechassemblygui.config" ],
       "condition" : [ "admin" ]
+    },
+
+    "metagui:settings" : {
+      "label" : "Settings",
+      "weight" : 9999,
+      "icon" : "/quickbar/metagui.png",
+      "action" : [ "ui", "metagui:settings" ],
+      "condition" : [ "configExists", "/metagui/registry.json" ]
     }
   }
 }
