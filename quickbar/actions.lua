@@ -7,7 +7,9 @@ function actions.changeMode()
 end
 
 function actions.sail()
-  player.interact("OpenAiInterface")
+  if(root.assetJson("/frackinraces.config")) then player.interact("ScriptPane", "/interface/ai/fu_byosai.config")  --FU version
+  else player.interact("OpenAiInterface") --vanilla
+  end
 end
 
 function actions.pane(cfg)
