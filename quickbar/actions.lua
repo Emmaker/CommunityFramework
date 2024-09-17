@@ -1,6 +1,3 @@
-actions = actions or { }
-function action(id, ...) return actions[id] and actions[id](...) end
-
 function actions.changeMode()
   self.mode = self.mode == "compact" and "full" or "compact"
   populateLists()
@@ -16,7 +13,7 @@ function actions.pane(cfg)
 end
 
 function actions.ui(cfg, data) -- metaGUI
-  if not root.assetJson("/metagui/registry.json") then return end
+  if not pcall(function() root.assetJson("/metagui/registry.json") end) then return end
   player.interact("ScriptPane", { gui = { }, scripts = { "/metagui.lua" }, config = cfg, data = data })
 end
 

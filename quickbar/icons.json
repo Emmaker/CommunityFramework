@@ -1,6 +1,14 @@
 {
+  // Actions/conditions
+  "functions" : [
+    "/quickbar/actions.lua",
+    "/quickbar/conditions.lua"
+  ],
+
+  // Legacy icons
   "priority" : [ ], "admin" : [ ], "normal" : [ ],
 
+  // Modern icons
   "items" : {
     "communityframework:changemode" : {
       "label" : "Change Mode",
@@ -67,7 +75,7 @@
       "weight" : 9999,
       "icon" : "/quickbar/metagui.png",
       "action" : [ "ui", "metagui:settings" ],
-      "condition" : [ "configExists", "/metagui/registry.json" ]
+      "condition" : [ "configExists", "/metagui/settings/settings.ui" ]
     }
   }
 }

@@ -1,6 +1,3 @@
-conditions = conditions or { }
-function condition(id, ...) return conditions[id] and conditions[id](...) end
-
 conditions["not"] = function(...)
   return not condition(...)
 end
@@ -44,7 +41,7 @@ function conditions.hasCompletedQuest(questId)
 end
 
 function conditions.configExists(key)
-  return root.assetJson(key) ~= nil
+  return pcall(function() root.assetJson(key) end)
 end
 
 function conditions.techExists(name)

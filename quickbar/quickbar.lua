@@ -1,6 +1,10 @@
 require "/scripts/util.lua"
-require "/quickbar/conditions.lua"
-require "/quickbar/actions.lua"
+
+actions = actions or { }
+function action(id, ...) return actions[id] and actions[id](...) end
+
+conditions = conditions or { }
+function condition(id, ...) return conditions[id] and conditions[id](...) end
 
 local colorSub = {
   [ "^essential;" ] = "^#ffb133;",
@@ -12,16 +16,20 @@ function init()
   self.compactList = "scrollArea.compactList"
 
   self.mode = self.mode or "full"
-  self.icons = { }
+
+  self.json = root.assetJson("/quickbar/icons.json")
+  for _, file in pairs(self.json.functions) do
+    if type(file) == "string" then require(file) end
+  end
 
   loadIcons()
   populateLists()
 end
 
 function loadIcons()
-  local json = root.assetJson("/quickbar/icons.json")
+  self.icons = { }
 
-  for _, item in pairs(json.items) do
+  for _, item in pairs(self.json.items) do
     item.sort = string.lower(string.gsub(item.label, "(%b^;)", ""))
     item.label = string.gsub(item.label, "(%b^;)", colorSub)
     item.weight = item.weight or 0
@@ -29,7 +37,7 @@ function loadIcons()
   end
 
   -- Legacy icons
-  for _, item in pairs(json.priority) do
+  for _, item in pairs(self.json.priority) do
     table.insert(self.icons, {
       sort = string.lower(string.gsub(item.label, "(%b^;)", "")),
       label = string.gsub("^essential;" .. item.label, "(%b^;)", colorSub),
@@ -39,7 +47,7 @@ function loadIcons()
     })
   end
   if player.isAdmin() then
-    for _, item in pairs(json.admin) do
+    for _, item in pairs(self.json.admin) do
       table.insert(self.icons, {
         sort = string.lower(string.gsub(item.label, "(%b^;)", "")),
         label = string.gsub("^admin;" .. item.label, "(%b^;)", colorSub),
@@ -50,7 +58,7 @@ function loadIcons()
       })
     end
   end
-  for _, item in pairs(json.normal) do
+  for _, item in pairs(self.json.normal) do
     table.insert(self.icons, {
       sort = string.lower(string.gsub(item.label, "(%b^;)", "")),
       label = string.gsub(item.label, "(%b^;)", colorSub),
