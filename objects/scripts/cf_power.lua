@@ -5,8 +5,24 @@ function init()
   storage.maxPower = config.getParameter("maxPower", 0)
   storage.voltage = config.getParameter("voltage", 0)
   storage.power = storage.power or config.getParameter("startPower", 0)
-  
-  message.setHandler("cf_power", cf_power.handler)
+
+  message.setHandler("cf_power", function(_, _, message)
+    if message.voltage and message.voltage > storage.voltage then
+      storage.power = 0
+      message.power = 0
+    end
+
+    change = cf_power.createPower(message.power)
+    if message.alternating then
+      message.power = message.power - change
+      message.voltage = storage.voltage
+    else
+      message.power = 0
+      message.voltage = 0
+    end
+
+    return message
+  end)
 end
 
 -- int cf_power.getMaxPower()
