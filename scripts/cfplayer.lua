@@ -1,10 +1,11 @@
-require "/scripts/util.lua"
+require "/scripts/messageutil.lua"
 
 function init()
-    message.setHandler("cf_learncodex", function(_, _, name) learnCodex(name) end)
-    message.setHandler("cf_getcodices", getCodices)
+    message.setHandler("interact", localHandler(player.interact))
+    message.setHandler("cfLearnCodex", localHandler(getCodices))
+    message.setHandler("cfGetCodices", getCodices)
 
-    self.knownCodices = player.getProperty("cf_knownCodices") or {}
+    self.knownCodices = player.getProperty("cfKnownCodices") or {}
 
     learnDefaultCodices()
     removeInvalidCodices()
@@ -13,10 +14,6 @@ end
 function uninit()
     player.setProperty("cf_knownCodices", self.knownCodices)
 end
-
--- -------------------------
--- CODEX
--- -------------------------
 
 function getCodices()
     return self.knownCodices
