@@ -1,3 +1,4 @@
+require "/scripts/util.lua"
 require "/scripts/messageutil.lua"
 
 function init()
