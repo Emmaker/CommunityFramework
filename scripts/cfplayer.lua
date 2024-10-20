@@ -3,7 +3,7 @@ require "/scripts/messageutil.lua"
 
 function init()
     message.setHandler("interact", localHandler(player.interact))
-    message.setHandler("cfLearnCodex", localHandler(getCodices))
+    message.setHandler("cfLearnCodex", localHandler(learnCodex))
     message.setHandler("cfGetCodices", getCodices)
 
     self.knownCodices = player.getProperty("cfKnownCodices") or {}
