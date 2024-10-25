@@ -39,7 +39,7 @@ function removeInvalidCodices()
         if not pcall(function()
             local codex = root.assetJson(codex)
         end) or not codex then
-            table.remove(self.knownCodices, c)
+            table.remove(self.knownCodices)
         end
     end
 end
